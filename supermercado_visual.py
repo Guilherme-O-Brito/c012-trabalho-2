@@ -49,7 +49,7 @@ class ClienteVisual:
         self.tamanho = TILE_SIZE
         self.destino_x = x
         self.destino_y = y
-        self.velocidade = 0.8  # Velocidade reduzida (era 1.5)
+        self.velocidade = 1.5  # Velocidade aumentada de volta para o original
         self.tempo_inicio = None
         self.tempo_fim = None
         # Animação
@@ -128,30 +128,18 @@ class ClienteVisual:
             pygame.draw.circle(screen, DARK_GRAY, (self.x + self.tamanho + 8, self.y + 22), 2, 1)
             pygame.draw.circle(screen, DARK_GRAY, (self.x + self.tamanho + 15, self.y + 22), 2, 1)
         elif self.estado == "concluido":
-            # Cliente com uma expressão feliz
+            # Cliente com uma expressão mais simples (sem rosto complexo)
             pygame.draw.circle(screen, cor_ajustada, (self.x + self.tamanho//2, self.y - 5), self.tamanho//3)
             pygame.draw.rect(screen, cor_ajustada, (self.x, self.y, self.tamanho, self.tamanho))
             
-            # Desenhar sorriso :) mais visível
-            # Arco do sorriso
-            pygame.draw.arc(screen, BLACK, (self.x + self.tamanho//4, self.y - 10, self.tamanho//2, 10), 0, 3.14, 2)
+            # Adicionar bolha de diálogo com "Obrigado!" sempre que o cliente estiver no estado concluído
+            pygame.draw.ellipse(screen, WHITE, (self.x + self.tamanho, self.y - 25, 60, 20))
+            pygame.draw.ellipse(screen, BLACK, (self.x + self.tamanho, self.y - 25, 60, 20), 1)
+            pygame.draw.circle(screen, WHITE, (self.x + self.tamanho - 3, self.y - 15), 3)
+            pygame.draw.circle(screen, WHITE, (self.x + self.tamanho - 7, self.y - 10), 2)
             
-            # Desenhar olhos
-            olho_esq_x = self.x + self.tamanho//3 - 2
-            olho_dir_x = self.x + self.tamanho//3 * 2 + 2
-            olho_y = self.y - 8
-            pygame.draw.circle(screen, BLACK, (olho_esq_x, olho_y), 2)
-            pygame.draw.circle(screen, BLACK, (olho_dir_x, olho_y), 2)
-            
-            # Adicionar bolha de diálogo com "Obrigado!"
-            if random.random() < 0.3:  # Só mostra em alguns momentos para não ficar poluído
-                pygame.draw.ellipse(screen, WHITE, (self.x + self.tamanho, self.y - 25, 60, 20))
-                pygame.draw.ellipse(screen, BLACK, (self.x + self.tamanho, self.y - 25, 60, 20), 1)
-                pygame.draw.circle(screen, WHITE, (self.x + self.tamanho - 3, self.y - 10), 3)
-                pygame.draw.circle(screen, WHITE, (self.x + self.tamanho - 7, self.y - 5), 2)
-                
-                texto_obrigado = font.render("Obrigado!", True, BLACK)
-                screen.blit(texto_obrigado, (self.x + self.tamanho + 5, self.y - 23))
+            texto_obrigado = font.render("Obrigado!", True, BLACK)
+            screen.blit(texto_obrigado, (self.x + self.tamanho + 5, self.y - 23))
 
         # Desenhar o ID
         texto_id = font.render(str(self.id), True, BLACK)
@@ -306,7 +294,7 @@ class SimulacaoVisual:
     def entrada_clientes_fila(self):
         """Controla a entrada gradual dos clientes na fila de espera"""
         # Esperar um tempo antes de começar a processar clientes
-        time.sleep(2.0)  # Aumentado de 1.0 para 2.0
+        time.sleep(1.0)  # Reduzido de 2.0 para 1.0
         
         # Posicionar cada cliente na fila, um por um, com uma pequena pausa entre eles
         for i, cliente in enumerate(self.clientes):
@@ -323,7 +311,7 @@ class SimulacaoVisual:
             cliente.mover_para(pos_x, pos_y)
             
             # Pequena pausa entre a entrada de cada cliente
-            time.sleep(0.8)  # Aumentado de 0.3 para 0.8
+            time.sleep(0.3)  # Reduzido de 0.8 para 0.3
 
     def desenhar_ambiente(self):
         """Desenha o ambiente do supermercado"""
@@ -412,8 +400,8 @@ class SimulacaoVisual:
         # Registrar o tempo de início
         cliente.tempo_inicio = time.time()
         
-        # Simular o processamento de pagamento
-        time.sleep(2.0)
+        # Simular o processamento de pagamento (reduzido para acelerar)
+        time.sleep(1.0)  # Reduzido de 2.0 para 1.0
         
         # Atualizando o caixa
         # COM semáforo - operação protegida
@@ -423,13 +411,13 @@ class SimulacaoVisual:
             try:
                 # Registra o valor total corretamente
                 valor_atual = caixa.valor_total
-                time.sleep(0.8)
+                time.sleep(0.3)  # Reduzido de 0.8 para 0.3
                 caixa.valor_total += cliente.valor_compra
                 
-                # Animar moedas sendo pagas
-                for _ in range(5):
+                # Animar moedas sendo pagas (reduzido para acelerar)
+                for _ in range(3):  # Reduzido de 5 para 3 moedas
                     cliente.adicionar_moeda()
-                    time.sleep(0.3)
+                    time.sleep(0.1)  # Reduzido de 0.3 para 0.1
             finally:
                 # Libera o semáforo
                 self.semaforo.release()
@@ -438,24 +426,24 @@ class SimulacaoVisual:
             # Leitura do valor atual
             valor_atual = caixa.valor_total
             
-            # Animação de moedas sendo pagas
-            for _ in range(5):
+            # Animação de moedas sendo pagas (reduzido para acelerar)
+            for _ in range(3):  # Reduzido de 5 para 3 moedas
                 cliente.adicionar_moeda()
-                time.sleep(0.3)
+                time.sleep(0.1)  # Reduzido de 0.3 para 0.1
             
-            # Pausa para aumentar chance de condição de corrida
-            time.sleep(0.8)
+            # Pausa para aumentar chance de condição de corrida (reduzido para acelerar)
+            time.sleep(0.3)  # Reduzido de 0.8 para 0.3
             
             # Cálculo e atribuição não atômicos
             novo_valor = valor_atual + cliente.valor_compra
-            time.sleep(0.4)
+            time.sleep(0.2)  # Reduzido de 0.4 para 0.2
             caixa.valor_total = novo_valor  # Possível perda de atualizações
         
         # Registrar o tempo de fim
         cliente.tempo_fim = time.time()
         
-        # Tempo adicional antes de liberar o caixa
-        time.sleep(1.0)
+        # Tempo adicional antes de liberar o caixa (reduzido)
+        time.sleep(0.5)  # Reduzido de 1.0 para 0.5
         
         # Liberar o caixa
         caixa.estado = "livre"
