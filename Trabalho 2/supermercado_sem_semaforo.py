@@ -21,22 +21,22 @@ class CaixaSemProtecao:
         
         print(f"Cliente {cliente_id} está sendo atendido")
         
-        # Simula o tempo de processamento
-        time.sleep(0.1)
+        # Simula o tempo de processamento com valor aleatório
+        time.sleep(random.uniform(0.05, 0.15))
         
         # Operações não atômicas que causam problema de concorrência
         # 1. Lê o valor atual
         valor_atual = self.valor_total
         print(f">>> Cliente {cliente_id} leu o valor atual: R$ {valor_atual:.2f}")
         
-        # 2. Pequena pausa que simula o tempo de processamento
-        time.sleep(0.2)
+        # 2. Pequena pausa que simula o tempo de processamento - aleatória para cada cliente
+        time.sleep(random.uniform(0.1, 0.3))
         
         # 3. Calcula novo valor
         novo_valor = valor_atual + valor
         
-        # 4. Outra pequena pausa antes de atualizar
-        time.sleep(0.1)
+        # 4. Outra pequena pausa antes de atualizar - também aleatória
+        time.sleep(random.uniform(0.05, 0.2))
         
         # 5. Atribui o novo valor
         self.valor_total = novo_valor
@@ -56,7 +56,7 @@ def main():
     caixa = CaixaSemProtecao()
     
     # Número de clientes
-    num_clientes = 10
+    num_clientes = 5
     
     # Cria valores aleatórios para as compras (sem seed fixa)
     valores_compra = [round(random.uniform(10, 100), 2) for _ in range(num_clientes)]

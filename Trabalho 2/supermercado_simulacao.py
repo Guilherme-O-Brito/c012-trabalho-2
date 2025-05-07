@@ -64,7 +64,7 @@ def main():
     caixa = CaixaComSemaforo()
     
     # Número de clientes
-    num_clientes = 10
+    num_clientes = 5
     
     # Cria valores aleatórios para as compras (sem seed fixa)
     valores_compra = [round(random.uniform(10, 100), 2) for _ in range(num_clientes)]
